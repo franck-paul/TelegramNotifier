@@ -11,7 +11,6 @@ use Dotclear\Helper\Html\Form\Input;
 use Dotclear\Helper\Html\Form\Label;
 use Dotclear\Helper\Html\Form\Para;
 use Dotclear\Helper\Html\Html;
-use Dotclear\Interface\Core\UserWorkspaceInterface;
 use Exception;
 
 /**
@@ -58,7 +57,7 @@ class TelegramUser
                     'pref_id',
                     'pref_value',
                 ])
-                ->from(App::db()->con()->prefix() . UserWorkspaceInterface::WS_TABLE_NAME)
+                ->from(App::db()->con()->prefix() . App::userWorkspace()::WS_TABLE_NAME)
                 ->and('pref_ws = ' . $sql->quote(My::id()))
                 ->where('user_id = ' . $sql->quote($this->user));
 
@@ -177,8 +176,8 @@ class TelegramUser
                 }
 
                 // Save config
-                My::prefs()->put('chat', $chat, UserWorkspaceInterface::WS_INT);
-                My::prefs()->put('token', $token, UserWorkspaceInterface::WS_STRING);
+                My::prefs()->put('chat', $chat, App::userWorkspace()::WS_INT);
+                My::prefs()->put('token', $token, App::userWorkspace()::WS_STRING);
             }
         }
     }
@@ -204,7 +203,7 @@ class TelegramUser
                 'pref_value',
                 'pref_type',
             ])
-            ->from(App::db()->con()->prefix() . UserWorkspaceInterface::WS_TABLE_NAME)
+            ->from(App::db()->con()->prefix() . App::userWorkspace()::WS_TABLE_NAME)
             ->and('pref_ws = ' . $sql->quote(My::id()))
             ->where('user_id = ' . $sql->quote($user_id));
 
@@ -217,12 +216,12 @@ class TelegramUser
                     $value = $rs->f('pref_value');
                     $type  = $rs->f('pref_type');
 
-                    if ($type === UserWorkspaceInterface::WS_ARRAY) {
+                    if ($type === App::userWorkspace()::WS_ARRAY) {
                         $value = @json_decode((string) $value, true);
-                    } elseif ($type === UserWorkspaceInterface::WS_FLOAT || $type === UserWorkspaceInterface::WS_DOUBLE) {
-                        $type = UserWorkspaceInterface::WS_FLOAT;
-                    } elseif ($type !== UserWorkspaceInterface::WS_BOOL && $type !== UserWorkspaceInterface::WS_INT) {
-                        $type = UserWorkspaceInterface::WS_STRING;
+                    } elseif ($type === App::userWorkspace()::WS_FLOAT || $type === App::userWorkspace()::WS_DOUBLE) {
+                        $type = App::userWorkspace()::WS_FLOAT;
+                    } elseif ($type !== App::userWorkspace()::WS_BOOL && $type !== App::userWorkspace()::WS_INT) {
+                        $type = App::userWorkspace()::WS_STRING;
                     }
 
                     settype($value, $type);

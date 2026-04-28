@@ -10,7 +10,6 @@ use Dotclear\Database\Statement\SelectStatement;
 use Dotclear\Helper\Html\Form\Checkbox;
 use Dotclear\Helper\Html\Form\Label;
 use Dotclear\Helper\Html\Form\Para;
-use Dotclear\Interface\Core\UserWorkspaceInterface;
 use Exception;
 
 /**
@@ -77,7 +76,7 @@ class TelegramAction
                 'user_id',
                 'pref_value',
             ])
-            ->from(App::db()->con()->prefix() . UserWorkspaceInterface::WS_TABLE_NAME)
+            ->from(App::db()->con()->prefix() . App::userWorkspace()::WS_TABLE_NAME)
             ->and('pref_ws = ' . $sql->quote(My::id()))
             ->and('pref_id = ' . $sql->quote($this->id))
             ->where('user_id IS NOT NULL');
@@ -122,7 +121,7 @@ class TelegramAction
     public function setForm(TelegramUser $user): void
     {
         if ($this->checkUser($user, true)) {
-            My::prefs()->put($this->id, !empty($_POST[My::id() . $this->id]), UserWorkspaceInterface::WS_BOOL);
+            My::prefs()->put($this->id, !empty($_POST[My::id() . $this->id]), App::userWorkspace()::WS_BOOL);
         }
     }
 }
