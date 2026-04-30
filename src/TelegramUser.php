@@ -162,7 +162,7 @@ class TelegramUser
     public function setForm(): void
     {
         if (App::auth()->userID() == $this->user) {
-            $chat  = (int) $_POST[My::id() . 'chat'] ?: 0;
+            $chat  = (int) $_POST[My::id() . 'chat'];
             $token = (string) $_POST[My::id() . 'token'] ?: '';
 
             if ($chat !== $this->chat || $token !== $this->token) {
