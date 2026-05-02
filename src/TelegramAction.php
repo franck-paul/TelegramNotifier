@@ -32,7 +32,7 @@ class TelegramAction
         public readonly string $permissions = '',
         public readonly mixed $condition = null,
     ) {
-        if (!in_array($this->type, Telegram::SUPPORTED_TYPES)) {
+        if (!in_array($this->type, Telegram::SUPPORTED_TYPES, true)) {
             throw new Exception(__('Unsupported Telegram message type.'));
         }
     }
